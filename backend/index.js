@@ -94,3 +94,19 @@ app.patch("/books/:id", async (req, res) => {
     res.status(500).send({ message: error.message });
   }
 });
+
+//Delete a book by id
+app.delete("/books/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const book = await Book.findByIdAndDelete(id);
+    if (!book) {
+      return res.status(404).send("Book with the given id not found!");
+    }
+    return res.status(201).send("Book deleted successfully!");
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).send({ message: error.message });
+  }
+});
