@@ -64,6 +64,33 @@ app.get("/books/:id", async (req, res) => {
     return res.status(200).send({ book });
   } catch (error) {
     console.log(error);
+
+    res.status(500).send({ message: error.message });
+  }
+});
+
+//Update book
+app.patch("/books/:id", async (req, res) => {
+  try {
+    const { title, author, publishYear } = req.body;
+    if (!title || !author || !publishYear) {
+      return res
+        .status(400)
+        .send("Title, Author and PublishYear of book required!");
+    }
+    const updatedBook = { title, author, publishYear };
+    const { id } = req.params;
+
+    const savedBook = await Book.findByIdAndUpdate(id, updatedBook, {
+      new: true,
+    });
+    if (!savedBook) {
+      return res.status(404).send("Book with the given id not found!");
+    }
+
+    res.status(201).send(savedBook);
+  } catch (error) {
+    console.log(error);
     res.status(500).send({ message: error.message });
   }
 });
