@@ -21,6 +21,7 @@ mongoose
   })
   .catch(console.error);
 
+//Post book
 app.post("/books", async (req, res) => {
   try {
     const { title, author, publishYear } = req.body;
@@ -32,6 +33,20 @@ app.post("/books", async (req, res) => {
     const newBook = { title, author, publishYear };
     const savedBook = await Book.create(newBook);
     res.status(201).send(savedBook);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: error.message });
+  }
+});
+
+//Get all books
+app.get("/books", async (req, res) => {
+  try {
+    const books = await Book.find();
+    return res.status(200).send({
+      count: books.length,
+      books,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: error.message });
