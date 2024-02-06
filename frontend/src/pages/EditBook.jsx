@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import BackButton from "../components/BackButton";
 import Spinner from "../components/Spinner";
 import axios from "axios";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const EditBook = () => {
   const [title, setTitle] = useState("");
