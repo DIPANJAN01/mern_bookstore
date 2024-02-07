@@ -9,7 +9,19 @@ import BooksTable from "../components/home/BooksTable";
 const Home = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [showType, setShowType] = useState("table");
+  // const [showType, setShowType] = useState("table");
+
+  const [showType, setShowType] = useState(() => {
+    // Retrieve the showType value from localStorage
+    const savedShowType = localStorage.getItem("showType");
+    // If there's a value in localStorage, parse and return it, else return the default value 'table'
+    return savedShowType ? JSON.parse(savedShowType) : "table";
+  });
+
+  // useEffect to persist showType value to localStorage
+  useEffect(() => {
+    localStorage.setItem("showType", JSON.stringify(showType));
+  }, [showType]); // Dependency array ensures this effect runs whenever showType changes
 
   useEffect(() => {
     setLoading(true);
