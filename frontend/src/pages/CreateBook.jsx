@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import BackButton from "../components/BackButton";
 import Spinner from "../components/Spinner";
 import axios from "axios";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 const CreateBook = () => {
   const [title, setTitle] = useState("");
@@ -10,7 +11,7 @@ const CreateBook = () => {
   const [publishYear, setPublishYear] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
+  const { enqueueSnackbar } = useSnackbar();
   const handleSubmit = () => {
     const book = { title, author, publishYear };
     setLoading(true);
@@ -18,12 +19,16 @@ const CreateBook = () => {
       .post("http://localhost:5555/books", book)
       .then(() => {
         setLoading(false);
+        enqueueSnackbar("Book created successfully!", { variant: "success" });
         navigate("/");
       })
       .catch((error) => {
         setLoading(false);
+        enqueueSnackbar("Something went wrong! Please try again!", {
+          variant: "error",
+        });
         // alert("Something went wrong! Please try again!");
-        alert(error.response.data);
+        // alert(error.response.data);
         console.log(error);
       });
   };
